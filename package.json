@@ -1,0 +1,32 @@
+{
+    "author": "FL03 <jo3mccain@scattered-systems.com> (https://github.com)",
+    "bugs": "https://github.com/FL03/contracts/issues",
+    "description": "Smart-Contracts created for the scsys initiative",
+    "dependencies": {
+        "@chainlink/contracts": "latest",
+        "@openzeppelin/contracts": "latest",
+        "@openzeppelin/contracts-upgradeable": "latest",
+        "@tableland/evm": "latest",
+        "@truffle/hdwallet-provider": "latest",
+        "dotenv": "latest"
+    },
+    "homepage": "https://github.com/FL03/contracts/wiki",
+    "keywords": [
+      "solidity",
+      "smart-contracts",
+      "ethereum",
+      "blockchain"
+    ],
+    "license": "Apache-2.0",
+    "name": "@pzzld/contracts",
+    "repository": "https://github.com/FL03/contracts",
+    "scripts": {
+        "preinstall": "npm install -g ganache-cli hardhat truffle",
+        "build": "npm run truffle compile",
+        "test": "npm run truffle test",
+        "truffle": "truffle"
+    },
+    "type": "commonjs",
+    "version": "0.1.0"
+  }
+  
