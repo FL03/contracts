@@ -16,8 +16,8 @@ interface IAppNFT is IERC721 {
 
 
 /**
- * @title ReShop
- * @dev The application NFT for shop interfaces minted by the platform auto imported onto Reaction
+ * @title AppNFT
+ * @dev The base application token serving as the backbone of each portal
  *
  */
 abstract contract AppNFT is ERC721URIStorage {

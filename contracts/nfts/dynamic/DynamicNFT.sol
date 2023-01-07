@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.8.10 <0.9.0;
+pragma solidity >=0.8.0 <0.9.0;
 
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
