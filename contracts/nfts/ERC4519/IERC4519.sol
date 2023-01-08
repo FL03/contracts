@@ -2,13 +2,14 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 /**
  * @custom:url https://eips.ethereum.org/EIPS/eip-4519 
  * @notice The EIP-165 identifier for the interface is 0x8a68abe3
  * @title IERC4519: 'SmartNFT' Extension of EIP-721 Non-Fungible Token Standard
  */
-interface IERC4519 is IERC721 /*,EIP165*/{
+interface IERC4519 is IERC165, IERC721 {
     /// @dev This emits when the NFT is assigned as utility of a new user.
     ///  This event emits when the user of the token changes.
     ///  (`_addressUser` == 0) when no user is assigned.
