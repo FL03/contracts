@@ -1,8 +1,11 @@
 /// SPDX-License-Identifier: Apache-2.0 
 pragma solidity >=0.8.0 <0.9.0;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
@@ -10,14 +13,14 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @dev An interface describing the basis of each application token
  * @title IAppNFT: 
  */
-interface IAppNFT {
+interface IAppNFT is IERC165, IERC721Receiver {
     event Authenticated(address indexed originator, string indexed appellation, uint256 tokenId);
 
     event Registered(address indexed originator, string indexed appellation, uint256 tokenId);
     event Registering(address indexed originator, string indexed appellation, uint256 tokenId);
     
     event Updated(address indexed originator, string indexed signature, uint256 cid);
-    event Updating(address indexed originator, string indexed signature, string cid);
+    event Updating(address indexed owner, address indexed originator, string cid);
 
     /**
      * @dev Retrieve the previous build
