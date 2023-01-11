@@ -34,7 +34,7 @@ abstract contract DynamicNFT is ERC721, IERC721Receiver, Ownable, AutomationComp
         _baseURIString = baseURIString;
     }
 
-		function onERC721Received(address, address, uint256, bytes calldata) override external pure returns (bytes4) {
+	function onERC721Received(address, address, uint256, bytes calldata) override external pure returns (bytes4) {
         return IERC721Receiver.onERC721Received.selector;
     }
 }
