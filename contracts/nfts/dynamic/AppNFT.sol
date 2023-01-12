@@ -29,10 +29,11 @@ abstract contract AppNFT is ERC721, IERC721Receiver, Ownable, AutomationCompatib
     /** 
      * @notice Tableland-specific Information
      */
-    string private _baseURIString; // The Tableland gateway URL
     uint256 private _attributesTableId; // A table ID -- stores NFT attributes
+    string private _baseURIString; // The Tableland gateway URL
     uint256 private _tokensTableId; // A table ID -- stores the token ID and its current stage
-    string private constant _ATTRIBUTES_TABLE_PREFIX = "namespace"; // Table prefix for the flowers table
+
+    string private constant _ATTRIBUTES_TABLE_PREFIX = "components"; // Table prefix for the components table
     string private constant _TOKENS_TABLE_PREFIX = "tokens"; // Table prefix for the tokens table
     
 
@@ -42,7 +43,7 @@ abstract contract AppNFT is ERC721, IERC721Receiver, Ownable, AutomationCompatib
         _baseURIString = baseURIString;
     }
 
-		function onERC721Received(address, address, uint256, bytes calldata) override external pure returns (bytes4) {
+	function onERC721Received(address, address, uint256, bytes calldata) override external pure returns (bytes4) {
         return IERC721Receiver.onERC721Received.selector;
     }
 }

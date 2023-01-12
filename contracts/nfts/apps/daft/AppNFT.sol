@@ -26,6 +26,7 @@ abstract contract AppNFT is IAppNFT, ERC721URIStorage, Ownable {
     /// Fetch the previous build version given the latest release
     function getPreviousBuild(uint256 versionNumber)
         public
+        override
         view
         returns (string memory)
     {
