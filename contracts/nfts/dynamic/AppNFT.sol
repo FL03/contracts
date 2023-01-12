@@ -46,4 +46,9 @@ abstract contract AppNFT is ERC721, IERC721Receiver, Ownable, AutomationCompatib
 	function onERC721Received(address, address, uint256, bytes calldata) override external pure returns (bytes4) {
         return IERC721Receiver.onERC721Received.selector;
     }
+
+    // function checkUpkeep(bytes calldata checkData) override external returns (bool upkeepNeeded, bytes memory performData) {
+        
+    // }
+
 }
