@@ -65,6 +65,10 @@ contract Application is IAppToken, Initializable, ERC721Upgradeable, ERC721Burna
         override
     {}
 
+    function application() external view returns (string memory) {
+        return versions[_tokenIdCounter.current()];
+    }
+
 	function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
         return IERC721Receiver.onERC721Received.selector;
     }
@@ -103,14 +107,19 @@ contract Application is IAppToken, Initializable, ERC721Upgradeable, ERC721Burna
      * @dev Application tokens implement standard update methods, requiring a valid signature verified against the global registry on Reaction
      */
     function update(address originator, string memory signature, uint256 versioning) external payable returns (bool) {
-        emit Updating(originator, signature, versioning);
+        emit UpdateRequested(originator, signature, versioning);
+        
+        require(
+            originator == super.owner()
+        );
+        
         return true;
     }
     /**
      * @dev Fetch the current version from the store
      */
-    function version() external view returns (string memory) {
-        return versions[_tokenIdCounter.current()];
+    function version() external view returns (uint256) {
+        return _tokenIdCounter.current();
     }
 
     // The following functions are overrides required by Solidity.

@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
- * 
+ * @dev Applications are required to provide a signature 
  * @dev The base application token serving as the backbone of each portal
  * @title AppNFT
  */
@@ -19,15 +19,11 @@ abstract contract AppNFT is IAppToken, ERC721URIStorageUpgradeable, OwnableUpgra
     Counters.Counter public versions;
     mapping(uint256 => string) public builds; // Each version maps to the hash of the version; similar to NixOS packages
 
-    constructor(string memory tokenURI) {
-        __Ownable_init();
-        mint(tokenURI);
-    }
-
-    function initialize() initializer public {
-        __ERC721_init("MyToken", "MTK");
+    constructor(string memory _name, string memory _symbol, string memory tokenURI) {
+        __ERC721_init(_name, _symbol);
         __Ownable_init();
         __UUPSUpgradeable_init();
+        mint(tokenURI);
     }
 
     /// Fetch the previous build version given the latest release
@@ -63,7 +59,8 @@ abstract contract AppNFT is IAppToken, ERC721URIStorageUpgradeable, OwnableUpgra
         _transfer(from, to, tokenId);
     }
     /// This function enables owners to update their applications to the latest release
-    function updateApp(string memory newTokenURI) public {
+    function updateApp(string memory appellation, string memory newTokenURI) public {
+        emit UpdateRequested(msg.sender, appellation, versions.current() + 1);
         require(
             msg.sender == owner(),
             "Only the app owner can make this change"

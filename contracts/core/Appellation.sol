@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.8.0 <0.9.0;
 
-import "./Justifiable.sol";
+import "./Justification.sol";
 
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 

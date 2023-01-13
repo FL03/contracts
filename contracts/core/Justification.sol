@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
  * @custom:definition Justifiable is defined as capable of being justified; where justified is defined as having or proving to have a just, right, or reasonable basis
@@ -22,6 +23,9 @@ interface Justifiable {
  * @title Justification
  */
 abstract contract Justification is ERC721Upgradeable, Justifiable, OwnableUpgradeable {
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    // Counter for the current token ID
+    CountersUpgradeable.Counter private _tokenIdCounter;
 
     constructor(string memory _name, string memory _symbol) ERC721Upgradeable() {
 
@@ -32,7 +36,7 @@ abstract contract Justification is ERC721Upgradeable, Justifiable, OwnableUpgrad
 
         return true;
     }
-    
+
     function safeMint(address to) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
