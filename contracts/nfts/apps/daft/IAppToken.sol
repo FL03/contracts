@@ -20,8 +20,7 @@ interface IAppToken is IERC165, IERC721, IERC721Receiver {
     event Registered(address indexed originator, string indexed appellation, uint256 tokenId);
     event Registering(address indexed originator, string indexed appellation, uint256 tokenId);
     
-    event Updated(address indexed originator, string indexed signature, uint256 cid);
-    event Updating(address indexed owner, address indexed originator, string cid);
+    event Updating(address indexed originator, string indexed signature, uint256 versionNumber);
 
     /**
      * @dev Retrieve the previous build
@@ -30,9 +29,13 @@ interface IAppToken is IERC165, IERC721, IERC721Receiver {
     /**
      * @dev Register the created token with the correct registry
      */
-    function register(address originator, string memory appellation, uint256 tokenId) external view returns (bool);
+    function register(address originator, string memory appellation, uint256 tokenId) external payable returns (bool);
     /**
      * @dev Application tokens implement standard update methods, requiring a valid signature verified against the global registry on Reaction
      */
-    function update(string memory signature) external view returns (bool);
+    function update(address originator, string memory signature, uint256 versioning) external payable returns (bool);
+    /**
+     * @dev Fetch the current version
+     */
+    function version() external view returns (uint256);
 }

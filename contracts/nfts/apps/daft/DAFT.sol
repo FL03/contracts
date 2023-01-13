@@ -18,6 +18,8 @@ import "@tableland/evm/contracts/utils/TablelandDeployments.sol";
  * @title AppNFT
  */
 contract DAFT is ERC721, IAppToken, Ownable, AutomationCompatible {
+    uint256 currentVersion;
+
     // General dNFT and Chainlink data
     using Counters for Counters.Counter;
     // Counter for the current token ID
@@ -65,13 +67,21 @@ contract DAFT is ERC721, IAppToken, Ownable, AutomationCompatible {
     /**
      * @dev Register the created token with the correct registry
      */
-    function register(address originator, string memory appellation, uint256 tokenId) external view returns (bool) {
+    function register(address originator, string memory appellation, uint256 tokenId) external payable returns (bool) {
+        emit Registering(originator, appellation, tokenId);
         return true;
     }
     /**
      * @dev Application tokens implement standard update methods, requiring a valid signature verified against the global registry on Reaction
      */
-    function update(string memory signature) external view returns (bool) {
+    function update(address originator, string memory signature, uint256 versioning) external payable returns (bool) {
+        emit Updating(originator, signature, stage[versioning]);
         return true;
+    }
+    /**
+     * @dev Fetch the current version from the store
+     */
+    function version() external view returns (uint256) {
+        return stage[currentVersion];
     }
 }
