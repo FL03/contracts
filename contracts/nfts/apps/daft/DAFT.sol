@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.8.10 <0.9.0;
 
+import "./IAppToken.sol";
+
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
@@ -11,11 +13,11 @@ import "@tableland/evm/contracts/utils/SQLHelpers.sol";
 import "@tableland/evm/contracts/utils/TablelandDeployments.sol";
 
 /**
- * @dev A composite, dynamic application token for conveintly managing sofware
+ * @dev A composite, dynamic application token for conviently managing cloud-native applications
  * 
  * @title AppNFT
  */
-abstract contract AppNFT is ERC721, IERC721Receiver, Ownable, AutomationCompatible {
+contract DAFT is ERC721, IAppToken, Ownable, AutomationCompatible {
     // General dNFT and Chainlink data
     using Counters for Counters.Counter;
     // Counter for the current token ID
@@ -47,8 +49,29 @@ abstract contract AppNFT is ERC721, IERC721Receiver, Ownable, AutomationCompatib
         return IERC721Receiver.onERC721Received.selector;
     }
 
-    // function checkUpkeep(bytes calldata checkData) override external returns (bool upkeepNeeded, bytes memory performData) {
+    function checkUpkeep(bytes calldata checkData) override external pure returns (bool upkeepNeeded, bytes memory performData) {
         
-    // }
+        return (false, checkData);
+    }
 
+    function performUpkeep(bytes calldata performData) override external pure {
+    }
+    /**
+     * @dev Retrieve the previous build
+     */
+    function getPreviousBuild(uint256 versionNumber) external view returns (uint256) {
+        return stage[versionNumber];
+    }
+    /**
+     * @dev Register the created token with the correct registry
+     */
+    function register(address originator, string memory appellation, uint256 tokenId) external view returns (bool) {
+        return true;
+    }
+    /**
+     * @dev Application tokens implement standard update methods, requiring a valid signature verified against the global registry on Reaction
+     */
+    function update(string memory signature) external view returns (bool) {
+        return true;
+    }
 }

@@ -1,10 +1,11 @@
 /// SPDX-License-Identifier: Apache-2.0 
 pragma solidity >=0.8.0 <0.9.0;
 
-import "./IApp.sol";
+import "./IAppToken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
@@ -12,7 +13,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @dev The base application token serving as the backbone of each portal
  * @title AppNFT
  */
-abstract contract AppNFT is IAppNFT, ERC721URIStorage, Ownable {
+abstract contract AppNFT is IAppToken, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter public versions;
     mapping(uint256 => string) public builds;
@@ -67,4 +68,4 @@ abstract contract AppNFT is IAppNFT, ERC721URIStorage, Ownable {
         builds[currentVersion + 1] = newTokenURI;
         versions.increment();
     }
-}
+} 

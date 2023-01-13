@@ -5,15 +5,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * 
  * @dev An interface describing the basis of each application token
- * @title IAppNFT: 
+ * @title IDAFT: 
  */
-interface IAppNFT is IERC165, IERC721Receiver {
+interface IAppToken is IERC165, IERC721, IERC721Receiver {
     event Authenticated(address indexed originator, string indexed appellation, uint256 tokenId);
 
     event Registered(address indexed originator, string indexed appellation, uint256 tokenId);
@@ -25,9 +26,9 @@ interface IAppNFT is IERC165, IERC721Receiver {
     /**
      * @dev Retrieve the previous build
      */
-    function getPreviousBuild(uint256 versionNumber) external view returns (string memory);
+    function getPreviousBuild(uint256 versionNumber) external view returns (uint256);
     /**
-     * @dev Register the application with the mainnet (Reaction)
+     * @dev Register the created token with the correct registry
      */
     function register(address originator, string memory appellation, uint256 tokenId) external view returns (bool);
     /**
