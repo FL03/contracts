@@ -2,10 +2,11 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "./IAppToken.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
@@ -13,15 +14,20 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @dev The base application token serving as the backbone of each portal
  * @title AppNFT
  */
-abstract contract AppNFT is IAppToken, ERC721URIStorage, Ownable {
+abstract contract AppNFT is IAppToken, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
     using Counters for Counters.Counter;
     Counters.Counter public versions;
-    mapping(uint256 => string) public builds;
-    address public appOwner;
+    mapping(uint256 => string) public builds; // Each version maps to the hash of the version; similar to NixOS packages
 
-    constructor(string memory name_, string memory symbol_, string memory tokenURI) ERC721(name_, symbol_) {
-        appOwner = msg.sender;
+    constructor(string memory tokenURI) {
+        __Ownable_init();
         mint(tokenURI);
+    }
+
+    function initialize() initializer public {
+        __ERC721_init("MyToken", "MTK");
+        __Ownable_init();
+        __UUPSUpgradeable_init();
     }
 
     /// Fetch the previous build version given the latest release
@@ -55,12 +61,11 @@ abstract contract AppNFT is IAppToken, ERC721URIStorage, Ownable {
         );
 
         _transfer(from, to, tokenId);
-        appOwner = to;
     }
     /// This function enables owners to update their applications to the latest release
     function updateApp(string memory newTokenURI) public {
         require(
-            msg.sender == appOwner,
+            msg.sender == owner(),
             "Only the app owner can make this change"
         );
         uint256 currentVersion = versions.current();
