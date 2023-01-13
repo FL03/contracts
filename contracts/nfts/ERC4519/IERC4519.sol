@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
  * @notice The EIP-165 identifier for the interface is 0x8a68abe3
  * @title IERC4519: 'SmartNFT' Extension of EIP-721 Non-Fungible Token Standard
  */
-interface IERC4519 is IERC165, IERC721 {
+interface IERC4519 is IERC165 {
     /// @dev This emits when the NFT is assigned as utility of a new user.
     ///  This event emits when the user of the token changes.
     ///  (`_addressUser` == 0) when no user is assigned.
