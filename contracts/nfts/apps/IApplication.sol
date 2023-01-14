@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * 
@@ -24,5 +25,18 @@ interface IApplication {
      * @dev Fetch the current version
      */
     function version() external view returns (uint256);
- 
+}
+
+
+abstract contract Application is IApplication {
+    using Counters for Counters.Counter;
+    Counters.Counter public versioning;
+
+    mapping(uint256 => string) versions;
+
+    constructor() {
+        versioning.increment();
+    }
+
+
 }

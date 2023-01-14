@@ -17,9 +17,9 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  */
 contract App is ERC721URIStorageUpgradeable, IApplication, OwnableUpgradeable, UUPSUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
-    CountersUpgradeable.Counter public versions;
+    CountersUpgradeable.Counter public versioning;
     
-    mapping(uint256 => string) public builds; // Each version maps to the hash of the version; similar to NixOS packages
+    mapping(uint256 => string) public versions; // Each version maps to the hash of the version; similar to NixOS packages
 
     constructor(string memory _name, string memory _symbol, string memory tokenURI) {
         __ERC721_init(_name, _symbol);
@@ -31,16 +31,16 @@ contract App is ERC721URIStorageUpgradeable, IApplication, OwnableUpgradeable, U
     function _authorizeUpgrade(address newImplementation) internal onlyOwner override virtual {}
     /// Fetch the previous build version given the latest release
     function getPreviousBuild(uint256 versionNumber) public override view returns (string memory) {
-        return builds[versionNumber];
+        return versions[versionNumber];
     }
     /// Implements the method of generation, minting new applications accordingly
     function mint(string memory tokenURI) private returns (uint256) {
-        versions.increment();
+        versioning.increment();
         uint256 tokenId = 1;
         uint256 currentVersion = version();
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, tokenURI);
-        builds[currentVersion] = tokenURI;
+        versions[currentVersion] = tokenURI;
         return tokenId;
     }
     /// Implements a standard method of transfer
@@ -58,12 +58,12 @@ contract App is ERC721URIStorageUpgradeable, IApplication, OwnableUpgradeable, U
 
         _setTokenURI(1, newTokenURI);
 
-        builds[version() + 1] = newTokenURI;
-        versions.increment();
+        versions[version() + 1] = newTokenURI;
+        versioning.increment();
     }
     /// Return the current version number
     function version() public view returns (uint256) {
-        return versions.current();
+        return versioning.current();
     }
     
 } 
