@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
  * @dev Updating the application requires the user to provide a 
@@ -16,8 +16,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @title AppNFT
  */
 contract AppNFT is IApplication, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
-    using Counters for Counters.Counter;
-    Counters.Counter public versions;
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    CountersUpgradeable.Counter public versions;
     mapping(uint256 => string) public builds; // Each version maps to the hash of the version; similar to NixOS packages
 
     constructor(string memory _name, string memory _symbol, string memory tokenURI) {
