@@ -11,11 +11,14 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
  * @dev Appellations implement a standard naming schematic which allows us to imbue a certain perspective within
  * @title IAppellation
  */
-contract Appellation is ERC165, Justifiable {
+interface IAppellation {
+    event Created(address indexed originator, string indexed appellation);
 
-    function justify(address originator, string memory appellation, uint256 uid) override external payable returns (bool) {
-        emit Justified(originator, appellation, uid);
+    function name() external view returns (string memory);
+    /**
+     * @return address: 
+     */
+    function origin() external view returns (address);
 
-        return true;
-    }
+    function position() external view returns (uint256);
 }
