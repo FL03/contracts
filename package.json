@@ -21,12 +21,11 @@
     "name": "@pzzld/contracts",
     "repository": "https://github.com/FL03/contracts",
     "scripts": {
-        "preinstall": "npm install -g ganache-cli hardhat truffle",
         "build": "npm run truffle compile",
         "test": "npm run truffle test",
         "truffle": "truffle"
     },
     "type": "commonjs",
-    "version": "0.1.1"
+    "version": "0.1.2"
   }
   
