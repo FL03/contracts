@@ -28,8 +28,9 @@ interface Versionable {
     function getPreviousBuild(uint256 versionNumber) external view returns (string memory);
     /**
      * @dev Application tokens implement standard update methods, requiring a valid signature verified against the global registry on Reaction
+     * @return The method returns a proof-of-update;
      */
-    function update(address originator, string memory signature, uint256 versioning) external payable returns (bool);
+    function update(string memory signature, uint256 versioning) external payable returns (string memory);
     /**
      * @dev Fetch the current version
      */

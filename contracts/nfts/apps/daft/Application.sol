@@ -1,7 +1,8 @@
 /// SPDX-License-Identifier: Apache-2.0 
 pragma solidity >=0.8.0 <0.9.0;
 
-import "./IAppToken.sol";
+import "./IApplication.sol";
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
@@ -10,11 +11,11 @@ import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
- * @dev Applications are required to provide a signature 
+ * @dev Updating the application requires the user to provide a 
  * @dev The base application token serving as the backbone of each portal
  * @title AppNFT
  */
-abstract contract AppNFT is IAppToken, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract AppNFT is IApplication, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
     using Counters for Counters.Counter;
     Counters.Counter public versions;
     mapping(uint256 => string) public builds; // Each version maps to the hash of the version; similar to NixOS packages
@@ -26,6 +27,8 @@ abstract contract AppNFT is IAppToken, ERC721URIStorageUpgradeable, OwnableUpgra
         mint(tokenURI);
     }
 
+    /// Authorize the contract upgrade
+    function _authorizeUpgrade(address newImplementation) internal onlyOwner override virtual {}
     /// Fetch the previous build version given the latest release
     function getPreviousBuild(uint256 versionNumber)
         public
@@ -59,15 +62,17 @@ abstract contract AppNFT is IAppToken, ERC721URIStorageUpgradeable, OwnableUpgra
         _transfer(from, to, tokenId);
     }
     /// This function enables owners to update their applications to the latest release
-    function updateApp(string memory appellation, string memory newTokenURI) public {
-        emit UpdateRequested(msg.sender, appellation, versions.current() + 1);
-        require(
-            msg.sender == owner(),
-            "Only the app owner can make this change"
-        );
-        uint256 currentVersion = versions.current();
+    function update(string memory appellation, string memory newTokenURI) public onlyOwner {
+        emit UpdateRequested(msg.sender, appellation, version() + 1);
+
         _setTokenURI(1, newTokenURI);
-        builds[currentVersion + 1] = newTokenURI;
+
+        builds[version() + 1] = newTokenURI;
         versions.increment();
     }
+    /// Return the current version number
+    function version() public view returns (uint256) {
+        return versions.current();
+    }
+
 } 
