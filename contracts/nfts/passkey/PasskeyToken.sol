@@ -15,8 +15,7 @@ import "@tableland/evm/contracts/utils/TablelandDeployments.sol";
  *
  * @title IPasskeyToken: Interface for the self-managed FIDO Passkey Token
  */
-interface IPasskeyToken is IERC165, IERC721, IERC721Receiver {
-
+interface IPasskeyToken {
     event RegistrationSuccess(address indexed originator, address indexed registrant, string deviceId, uint256 tokenId);
 
     function authenticate(uint256 tokenId, string memory sk) external view returns (bool);
@@ -28,7 +27,7 @@ interface IPasskeyToken is IERC165, IERC721, IERC721Receiver {
  *
  * @title PasskeyToken: The FIDO Passkey Token
  */
-abstract contract PasskeyToken is IPasskeyToken, AutomationCompatible, Ownable {
+abstract contract PasskeyToken is IPasskeyToken, AutomationCompatible, ERC721, IERC721Receiver, Ownable {
     /** 
      * @dev General info for ChainLink & Dynamic NFT's
      */
