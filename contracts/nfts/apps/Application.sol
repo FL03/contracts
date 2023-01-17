@@ -4,12 +4,13 @@ pragma solidity >=0.8.0 <0.9.0;
 import "./IApplication.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 /**
  * @dev Updating the application requires the user to provide a 
  * @dev The base application token serving as the backbone of each portal
@@ -17,11 +18,26 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
  */
 contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
-    CountersUpgradeable.Counter public versioning;
+    CountersUpgradeable.Counter private versioning;
     
+    uint256 interval;
+    uint256 prevTimestamp;
+
     mapping(uint256 => string) public versions; // Each version maps to the hash of the version; similar to NixOS packages
 
-    constructor() {
+    /**
+     * @notice Tableland specific information
+     */
+    uint256 private _attributesTableId; // A table ID -- stores NFT attributes
+    uint256 private _tokensTableId; // A table ID -- stores the token ID and its current stage
+    string private constant _ATTRIBUTES_TABLE_PREFIX = "app"; // Table prefix
+    string private constant _TOKENS_TABLE_PREFIX = "tokens"; // Table prefix for the tokens table
+    string private _baseURIString; // The Tableland gateway URL
+
+    constructor(string memory baseURIString) {
+        interval = 30; // Hardcode some interval value (in seconds) for when the dynamic NFT should "grow" into the next stage
+        prevTimestamp = block.timestamp;
+        _baseURIString = baseURIString;
         initialize();
     }
     function initialize() initializer public {
