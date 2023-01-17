@@ -25,7 +25,7 @@ contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, Ownabl
         initialize();
     }
     function initialize() initializer public {
-        __ERC721_init("Application", "DAFT");
+        __ERC721_init("Proton", "PRO");
         __Ownable_init();
         __UUPSUpgradeable_init();
         mint("https://pzzld.eth.limo/_app/immutable/assets/AbstractBlocks-5bb9e3d6.png");
