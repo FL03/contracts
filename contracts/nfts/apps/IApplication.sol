@@ -12,7 +12,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 interface IApplication {
 
     event UpdateRequested(address indexed originator, string indexed appellation, uint256 versionId);
-
+    event UpdateSuccess(address indexed originator, string indexed appellation, uint256 versionId);
+    
     /**
      * @dev Retrieve the previous build
      */
@@ -25,18 +26,4 @@ interface IApplication {
      * @dev Fetch the current version
      */
     function version() external view returns (uint256);
-}
-
-
-abstract contract Application is IApplication {
-    using Counters for Counters.Counter;
-    Counters.Counter public versioning;
-
-    mapping(uint256 => string) versions;
-
-    constructor() {
-        versioning.increment();
-    }
-
-
 }

@@ -25,12 +25,11 @@ contract DynamicNFT is ERC721, IERC721Receiver, Ownable, AutomationCompatible {
     uint256 private _tokensTableId; // A table ID -- stores the token ID and its current stage
     string private constant _FLOWERS_TABLE_PREFIX = "flowers"; // Table prefix for the flowers table
     string private constant _TOKENS_TABLE_PREFIX = "tokens"; // Table prefix for the tokens table
-    string private _baseURIString; // The Tableland gateway URL
+    string private _baseURIString = "https://testnets.tableland.network/query?s="; // The Tableland gateway URL
 
-    constructor(string memory baseURIString) ERC721("DynamicNFT", "dNFT") {
+    constructor() ERC721("DynamicNFT", "dNFT") {
         interval = 30; // Hardcode some interval value (in seconds) for when the dynamic NFT should "grow" into the next stage
         lastTimeStamp = block.timestamp; // Track the most recent timestamp for when a dynamic VRF update occurred
-        _baseURIString = baseURIString;
     }
 
     /**
