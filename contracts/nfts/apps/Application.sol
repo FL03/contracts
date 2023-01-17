@@ -20,7 +20,7 @@ contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, Ownabl
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private versioning;
     
-    uint256 interval;
+    uint256 interval = 30; // A hardcoded interval (seconds) describing when the NFT should morph
     uint256 prevTimestamp;
 
     mapping(uint256 => string) public versions; // Each version maps to the hash of the version; similar to NixOS packages
@@ -32,12 +32,10 @@ contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, Ownabl
     uint256 private _tokensTableId; // A table ID -- stores the token ID and its current stage
     string private constant _ATTRIBUTES_TABLE_PREFIX = "app"; // Table prefix
     string private constant _TOKENS_TABLE_PREFIX = "tokens"; // Table prefix for the tokens table
-    string private _baseURIString; // The Tableland gateway URL
+    string private _baseURIString = "https://testnets.tableland.network/query?s="; // The Tableland gateway URL
 
-    constructor(string memory baseURIString) {
-        interval = 30; // Hardcode some interval value (in seconds) for when the dynamic NFT should "grow" into the next stage
+    constructor() {
         prevTimestamp = block.timestamp;
-        _baseURIString = baseURIString;
         initialize();
     }
     function initialize() initializer public {
