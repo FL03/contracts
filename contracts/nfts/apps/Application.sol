@@ -8,17 +8,22 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
- * @dev Updating the application requires the user to provide a 
- * @dev The base application token serving as the backbone of each portal
+ * @dev Application tokens are essentially uniquely signed bundles of assets stored as references.
+ * @dev Each token minted duplicates the current version on some permaweb solution linked by the user on creation.
+ * @dev All applications require a unique signature, generated from both the user and their active device.
+ * @dev As time goes on, users may be prompted to update their application to the most recent version; this however, is optional though suggested.
+ * @notice Certain considerations have been taken in preperation for ProtonOS; a composite application token wrapping the registered namespace with everything requried...
  * @title AppNFT
  */
 contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+    /**
+     * @notice Tableland specific information
+     */
     using CountersUpgradeable for CountersUpgradeable.Counter;
-    CountersUpgradeable.Counter private versioning;
+    CountersUpgradeable.Counter private _tokenCounter;
     
     uint256 interval = 30; // A hardcoded interval (seconds) describing when the NFT should morph
     uint256 prevTimestamp;
@@ -39,7 +44,7 @@ contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, Ownabl
         initialize();
     }
     function initialize() initializer public {
-        __ERC721_init("Proton", "PRO");
+        __ERC721_init("Application", "dAPP");
         __Ownable_init();
         __UUPSUpgradeable_init();
         mint("https://pzzld.eth.limo/_app/immutable/assets/AbstractBlocks-5bb9e3d6.png");
@@ -52,7 +57,7 @@ contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, Ownabl
     }
     /// Implements the method of generation, minting new applications accordingly
     function mint(string memory tokenURI) private returns (uint256) {
-        versioning.increment();
+        _tokenCounter.increment();
         uint256 tokenId = 1;
         uint256 currentVersion = version();
         _mint(msg.sender, tokenId);
@@ -76,11 +81,11 @@ contract App is Initializable, IApplication, ERC721URIStorageUpgradeable, Ownabl
         _setTokenURI(1, newTokenURI);
 
         versions[version() + 1] = newTokenURI;
-        versioning.increment();
+        _tokenCounter.increment();
     }
     /// Return the current version number
     function version() override public view returns (uint256) {
-        return versioning.current();
+        return _tokenCounter.current();
     }
     
 } 
