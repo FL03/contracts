@@ -23,6 +23,7 @@
 **/debug/
 **/dist/
 **/env/
+**/ipfs/
 **/node_modules/
 **/pkg/
 **/target/
