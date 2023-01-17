@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
  */
 abstract contract ERC4519 is IERC4519, ERC721 {
 
-    constructor(string memory _baseURIString) {
-        
-    }
+    uint256 internal _dataEngagement;
+    uint256 internal _hashK_A;
+
 }

@@ -21,4 +21,5 @@ interface IAppellation {
     function origin() external view returns (address);
 
     function position() external view returns (uint256);
+
 }
