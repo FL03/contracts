@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * 
@@ -11,7 +12,8 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 interface IApplication {
 
     event UpdateRequested(address indexed originator, string indexed appellation, uint256 versionId);
-
+    event UpdateSuccess(address indexed originator, string indexed appellation, uint256 versionId);
+    
     /**
      * @dev Retrieve the previous build
      */
@@ -24,5 +26,4 @@ interface IApplication {
      * @dev Fetch the current version
      */
     function version() external view returns (uint256);
- 
 }

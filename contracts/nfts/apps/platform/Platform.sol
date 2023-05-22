@@ -12,14 +12,9 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
  *
  * @title Platform: A composite, dynamic application token forming the basis of a platform
  */
-contract Platform is ERC1155, IPlatform, Ownable {
+abstract contract Platform is ERC1155, IPlatform, Ownable {
 
     constructor(string memory _uri) ERC1155(_uri) {
 
-    }
-
-
-    function update(string memory versioning) external view returns (bool) {
-        return true;
     }
 }
