@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
  * @dev the ERC-165 identifier for this interface is `0x400a0398`
  * @title IERC6551Account: Non-fungible Token Bound Accounts Interface
  */
-interface IERC6551Account {
+interface IERC6551Account is IERC165 {
     /// @dev Token bound accounts MUST implement a `receive` function.
     ///
     /// Token bound accounts MAY perform arbitrary logic to restrict conditions
